@@ -12,7 +12,8 @@ export default async function OpportunityDetail({ params }: { params: Promise<{ 
   if (!opp) return notFound();
 
   async function getAISummary() {
-    const prompt = `Summarize opportunity: ${opp.name} in ${opp.state}, stage ${opp.stage}, amount $${opp.amount}.`;
+    // opp is guaranteed to be defined here due to the guard clause above
+    const prompt = `Summarize opportunity: ${opp!.name} in ${opp!.state}, stage ${opp!.stage}, amount $${opp!.amount}.`;
     try {
       const summary = await generateMeetingPrep({ prompt });
       return summary;

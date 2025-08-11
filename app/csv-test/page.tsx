@@ -127,10 +127,10 @@ export default function CSVTestPage() {
             
             {territoryColumn && (
               <div className="text-sm text-muted-foreground">
-                <p>Found {uniqueTerritories.length} unique territories in "{territoryColumn}" column</p>
+                <p>Found {uniqueTerritories.length} unique territories in &quot;{territoryColumn}&quot; column</p>
                 {selectedTerritory && (
                   <p className="mt-1">
-                    Showing {filteredData?.rows.length || 0} rows for "{selectedTerritory}"
+                    Showing {filteredData?.rows.length || 0} rows for &quot;{selectedTerritory}&quot;
                   </p>
                 )}
               </div>
@@ -191,7 +191,7 @@ export default function CSVTestPage() {
             <div className="bg-card border rounded-lg overflow-hidden">
               <div className="px-4 py-3 border-b bg-muted/50">
                 <h3 className="font-medium">
-                  Data Preview {selectedTerritory ? `(${selectedTerritory})` : '(All Territories)'}
+                  Data Preview {selectedTerritory ? `(${selectedTerritory})` : "(All Territories)"}
                 </h3>
                 <p className="text-sm text-muted-foreground">
                   Showing first 5 rows of {filteredData.rows.length} total rows
