@@ -1,0 +1,33 @@
+{
+  "base": 10,
+  "signalWeights": {
+    "News": 5,
+    "RFP": 20,
+    "Job": 8,
+    "Other": 2
+  },
+  "opportunity": {
+    "amountMultiplier": 3,
+    "stageBoosts": {
+      "Prospect": 0,
+      "Qualify": 5,
+      "Develop": 10,
+      "Propose": 15,
+      "CloseWon": 25,
+      "CloseLost": -10
+    },
+    "coSellBoost": 10,
+    "recencyHalfLifeDays": 30
+  },
+  "tags": {
+    "M&A": 15,
+    "RFP": 25,
+    "JobSpike": 12,
+    "Modernization": 8,
+    "Azure": 5,
+    "GitHub": 5
+  }
+}
+
+
+
