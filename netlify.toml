@@ -10,15 +10,15 @@
 
 [[scheduled.functions]]
   name = "fetchNews"
-  cron = "*/120 * * * *"
+  cron = "0 */2 * * *"
 
 [[scheduled.functions]]
   name = "fetchRFPs"
-  cron = "*/120 * * * *"
+  cron = "0 */2 * * *"
 
 [[scheduled.functions]]
   name = "fetchJobs"
-  cron = "*/120 * * * *"
+  cron = "0 */2 * * *"
 
 [[scheduled.functions]]
   name = "recomputeScores"
