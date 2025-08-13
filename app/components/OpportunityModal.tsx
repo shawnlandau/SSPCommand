@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { X, Save, Calendar, DollarSign, MapPin, Target, Flame } from 'lucide-react';
-import { Opportunity, Stage } from '@/types';
+import { Opportunity, Stage, StateCode } from '@/types';
 import territories from '@/config/territories.json';
 
 interface OpportunityModalProps {
@@ -25,7 +25,7 @@ export default function OpportunityModal({
     stage: 'Prospect' as Stage,
     amount: '',
     closeDate: '',
-    state: '',
+    state: '' as StateCode | '',
     heatScore: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -86,7 +86,7 @@ export default function OpportunityModal({
       stage: formData.stage,
       amount: parseFloat(formData.amount) * 1000000,
       closeDate: formData.closeDate || undefined,
-      state: formData.state,
+      state: formData.state as StateCode,
       heatScore: parseInt(formData.heatScore)
     };
     
@@ -105,18 +105,18 @@ export default function OpportunityModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card border border-border rounded-2xl shadow-large w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-large w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <h2 className="text-section text-foreground">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-2xl font-semibold text-gray-800">
             {opportunity ? 'Edit Opportunity' : 'Add New Opportunity'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-neutral-100 rounded-xl transition-colors duration-200"
+            className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5 text-foreground-muted" />
+            <X className="w-5 h-5 text-gray-600" />
           </button>
         </div>
 
@@ -124,7 +124,7 @@ export default function OpportunityModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Opportunity Name */}
           <div>
-            <label className="block text-body-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-gray-800 mb-2">
               Opportunity Name *
             </label>
             <div className="relative">
@@ -144,11 +144,11 @@ export default function OpportunityModal({
           {/* Stage and Amount Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-body-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-gray-800 mb-2">
                 Stage *
               </label>
               <div className="relative">
-                <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+                <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
                 <select
                   value={formData.stage}
                   onChange={(e) => handleInputChange('stage', e.target.value)}
@@ -162,11 +162,11 @@ export default function OpportunityModal({
             </div>
 
             <div>
-              <label className="block text-body-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-gray-800 mb-2">
                 Amount (M) *
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
                 <input
                   type="number"
                   step="0.01"
@@ -186,11 +186,11 @@ export default function OpportunityModal({
           {/* Close Date and Territory Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-body-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-gray-800 mb-2">
                 Close Date
               </label>
               <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
                 <input
                   type="date"
                   value={formData.closeDate}
@@ -201,11 +201,11 @@ export default function OpportunityModal({
             </div>
 
             <div>
-              <label className="block text-body-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-gray-800 mb-2">
                 Territory *
               </label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
                 <select
                   value={formData.state}
                   onChange={(e) => handleInputChange('state', e.target.value)}
@@ -225,11 +225,11 @@ export default function OpportunityModal({
 
           {/* Heat Score */}
           <div>
-            <label className="block text-body-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-gray-800 mb-2">
               Heat Score (0-100) *
             </label>
             <div className="relative">
-              <Flame className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+              <Flame className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
               <input
                 type="number"
                 min="0"
@@ -243,13 +243,13 @@ export default function OpportunityModal({
             {errors.heatScore && (
               <p className="mt-1 text-sm text-red-500">{errors.heatScore}</p>
             )}
-            <p className="mt-1 text-caption text-foreground-muted">
+            <p className="mt-1 text-xs text-gray-600">
               Higher scores indicate higher priority opportunities
             </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
             <button
               type="button"
               onClick={onClose}

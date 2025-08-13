@@ -94,32 +94,32 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-6 py-8 space-y-8">
         {/* Header */}
         <div className="space-y-3">
-          <h1 className="text-hero text-foreground">
+          <h1 className="text-3xl font-bold text-gray-800">
             Territory Command Center
           </h1>
-          <p className="text-body text-foreground-secondary">
+          <p className="text-base text-gray-600">
             Manage your SSP territory pipeline and opportunities with data-driven insights
           </p>
         </div>
 
         {/* CSV Upload Section */}
         {!csvData && (
-          <div className="bg-gradient-to-r from-accent-50 to-accent-100 border border-accent-200 rounded-2xl p-8">
+          <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-8">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="p-4 bg-accent-100 rounded-2xl">
-                  <Database className="w-10 h-10 text-accent-600" />
+                <div className="p-4 bg-blue-100 rounded-2xl">
+                  <Database className="w-10 h-10 text-blue-600" />
                 </div>
               </div>
               <div>
-                <h2 className="text-section text-foreground">
+                <h2 className="text-2xl font-semibold text-gray-800">
                   Get Started with Your Data
                 </h2>
-                <p className="text-body text-foreground-secondary mt-2">
+                <p className="text-base text-gray-600 mt-2">
                   Upload your CSV file to begin analyzing your territory data and unlock powerful insights
                 </p>
               </div>
@@ -140,8 +140,8 @@ export default function DashboardPage() {
             <div className="flex items-center gap-3">
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
-                <p className="text-body-sm font-medium text-green-800">Upload Successful!</p>
-                <p className="text-caption text-green-600">Your data has been processed and is ready for analysis</p>
+                <p className="text-sm font-medium text-green-800">Upload Successful!</p>
+                <p className="text-xs text-green-600">Your data has been processed and is ready for analysis</p>
               </div>
             </div>
           </div>
@@ -150,13 +150,13 @@ export default function DashboardPage() {
         {/* CSV Upload Modal */}
         {showCSVUpload && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-card border border-border rounded-2xl shadow-large w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-border">
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-large w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-gray-200">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-section text-foreground">Upload CSV Data</h2>
+                  <h2 className="text-2xl font-semibold text-gray-800">Upload CSV Data</h2>
                   <button
                     onClick={() => setShowCSVUpload(false)}
-                    className="p-2 hover:bg-neutral-100 rounded-xl transition-colors"
+                    className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
                   >
                     ×
                   </button>
@@ -178,7 +178,7 @@ export default function DashboardPage() {
           />
           
           {csvData && (
-            <div className="flex items-center gap-2 text-body-sm text-foreground-muted">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
               <Database className="w-4 h-4" />
               <span>{csvData.rows.length} rows loaded</span>
             </div>
@@ -225,8 +225,8 @@ export default function DashboardPage() {
         {csvData && (
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Table className="w-5 h-5 text-accent-600" />
-              <h2 className="text-section text-foreground">Your Data</h2>
+              <Table className="w-5 h-5 text-blue-600" />
+              <h2 className="text-2xl font-semibold text-gray-800">Your Data</h2>
             </div>
             <DataTable
               data={csvData.rows}

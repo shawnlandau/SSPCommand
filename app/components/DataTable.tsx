@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { ChevronUp, ChevronDown, Filter, Search, Download, Eye } from 'lucide-react';
+import { ChevronUp, ChevronDown, Search, Download } from 'lucide-react';
 
 interface DataTableProps {
   data: string[][];
@@ -98,21 +98,21 @@ export default function DataTable({
   return (
     <div className={`card overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="px-6 py-4 border-b border-border bg-neutral-50">
+      <div className="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-section text-foreground">{title}</h3>
+            <h3 className="text-2xl font-semibold text-neutral-800">{title}</h3>
             {subtitle && (
-              <p className="text-body-sm text-foreground-muted mt-1">{subtitle}</p>
+              <p className="text-sm text-neutral-600 mt-1">{subtitle}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-body-sm text-foreground-muted">
+            <span className="text-sm text-neutral-600">
               {filteredAndSortedData.length} of {data.length} rows
             </span>
             <button
               onClick={handleExport}
-              className="btn-primary inline-flex items-center gap-2 text-body-sm"
+              className="btn-primary inline-flex items-center gap-2 text-sm"
             >
               <Download className="w-4 h-4" />
               Export
@@ -122,11 +122,11 @@ export default function DataTable({
       </div>
 
       {/* Search and Filters */}
-      <div className="px-6 py-4 border-b border-border">
+      <div className="px-6 py-4 border-b border-neutral-200">
         <div className="flex items-center gap-4">
           <div className="flex-1 max-w-md">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
               <input
                 type="text"
                 placeholder="Search in all columns..."
@@ -140,7 +140,7 @@ export default function DataTable({
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="px-3 py-2 text-body-sm text-foreground-muted hover:text-foreground transition-colors"
+              className="px-3 py-2 text-sm text-neutral-600 hover:text-neutral-800 transition-colors"
             >
               Clear
             </button>
@@ -156,7 +156,7 @@ export default function DataTable({
               {headers.map((header, index) => (
                 <th
                   key={index}
-                  className="px-4 py-3 text-left text-body-sm font-medium text-foreground-muted cursor-pointer hover:bg-neutral-100 transition-colors duration-150"
+                  className="px-4 py-3 text-left text-sm font-medium text-neutral-600 cursor-pointer hover:bg-neutral-100 transition-colors duration-150"
                   onClick={() => handleSort(index)}
                 >
                   <div className="flex items-center gap-2">
@@ -174,8 +174,8 @@ export default function DataTable({
                 className="border-b hover:bg-neutral-50 transition-colors duration-150"
               >
                 {row.map((cell, cellIndex) => (
-                  <td key={cellIndex} className="px-4 py-3 text-body-sm text-foreground">
-                    {cell || <span className="text-foreground-muted">—</span>}
+                  <td key={cellIndex} className="px-4 py-3 text-sm text-neutral-800">
+                    {cell || <span className="text-neutral-600">—</span>}
                   </td>
                 ))}
               </tr>
@@ -186,9 +186,9 @@ export default function DataTable({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="px-6 py-4 border-t border-border bg-neutral-50">
+        <div className="px-6 py-4 border-t border-neutral-200 bg-neutral-50">
           <div className="flex items-center justify-between">
-            <div className="text-body-sm text-foreground-muted">
+            <div className="text-sm text-neutral-600">
               Showing {startIndex + 1} to {Math.min(endIndex, filteredAndSortedData.length)} of {filteredAndSortedData.length} results
             </div>
             
@@ -196,7 +196,7 @@ export default function DataTable({
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-2 text-body-sm border border-border rounded-xl hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                className="px-3 py-2 text-sm border border-neutral-200 rounded-xl hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 Previous
               </button>
@@ -209,10 +209,10 @@ export default function DataTable({
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`px-3 py-2 text-body-sm rounded-xl transition-colors duration-200 ${
+                        className={`px-3 py-2 text-sm rounded-xl transition-colors duration-200 ${
                           page === currentPage
                             ? 'bg-accent-500 text-white'
-                            : 'border border-border hover:bg-neutral-100'
+                            : 'border border-neutral-200 hover:bg-neutral-100'
                         }`}
                       >
                         {page}
@@ -226,7 +226,7 @@ export default function DataTable({
               <button
                 onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-2 text-body-sm border border-border rounded-xl hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                className="px-3 py-2 text-sm border border-neutral-200 rounded-xl hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 Next
               </button>

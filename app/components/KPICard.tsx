@@ -75,11 +75,11 @@ export default function KPICard({
     <div className={`card p-6 transition-all duration-300 hover:shadow-medium ${getVariantStyles()} ${className}`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
-          <h3 className="text-body-sm font-medium text-foreground-muted mb-1">
+          <h3 className="text-sm font-medium text-neutral-600 mb-1">
             {title}
           </h3>
           {subtitle && (
-            <p className="text-caption text-foreground-muted">{subtitle}</p>
+            <p className="text-xs text-neutral-600">{subtitle}</p>
           )}
         </div>
         {icon && (
@@ -90,18 +90,18 @@ export default function KPICard({
       </div>
 
       <div className="mb-4">
-        <div className="text-hero font-bold text-foreground">
+        <div className="text-3xl font-bold text-neutral-800">
           {value}
         </div>
       </div>
 
       {trend && (
-        <div className={`flex items-center gap-2 text-body-sm ${getTrendColor()}`}>
+        <div className={`flex items-center gap-2 text-sm ${getTrendColor()}`}>
           {getTrendIcon()}
           <span className="font-medium">
             {trend.value > 0 ? '+' : ''}{trend.value}%
           </span>
-          <span className="text-foreground-muted">vs {trend.period}</span>
+          <span className="text-neutral-600">vs {trend.period}</span>
         </div>
       )}
     </div>

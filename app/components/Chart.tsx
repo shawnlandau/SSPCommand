@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +11,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
+  ChartData,
+  ChartOptions
 } from 'chart.js';
 import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
 
@@ -33,7 +34,7 @@ interface ChartProps {
   type: 'bar' | 'line' | 'pie' | 'doughnut';
   title: string;
   subtitle?: string;
-  data: any;
+  data: ChartData<'bar' | 'line' | 'pie' | 'doughnut'>;
   height?: number;
   className?: string;
 }
@@ -46,9 +47,7 @@ export default function Chart({
   height = 400,
   className = ''
 }: ChartProps) {
-  const chartRef = useRef<HTMLDivElement>(null);
-
-  const chartOptions = {
+  const baseOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -78,67 +77,101 @@ export default function Chart({
         titleFont: {
           family: 'Inter',
           size: 14,
-          weight: '600'
+          weight: 600
         },
         bodyFont: {
           family: 'Inter',
           size: 12
         }
       }
-    },
-    scales: type === 'bar' || type === 'line' ? {
-      x: {
-        grid: {
-          color: '#F0F0F0',
-          drawBorder: false
-        },
-        ticks: {
-          color: '#666666',
-          font: {
-            family: 'Inter',
-            size: 11
-          }
-        }
-      },
-      y: {
-        grid: {
-          color: '#F0F0F0',
-          drawBorder: false
-        },
-        ticks: {
-          color: '#666666',
-          font: {
-            family: 'Inter',
-            size: 11
-          }
-        }
-      }
-    } : undefined
+    }
   };
 
   const renderChart = () => {
     switch (type) {
       case 'bar':
-        return <Bar data={data} options={chartOptions} />;
+        const barOptions: ChartOptions<'bar'> = {
+          ...baseOptions,
+          scales: {
+            x: {
+              grid: {
+                color: '#F0F0F0'
+              },
+              ticks: {
+                color: '#666666',
+                font: {
+                  family: 'Inter',
+                  size: 11
+                }
+              }
+            },
+            y: {
+              grid: {
+                color: '#F0F0F0'
+              },
+              ticks: {
+                color: '#666666',
+                font: {
+                  family: 'Inter',
+                  size: 11
+                }
+              }
+            }
+          }
+        };
+        return <Bar data={data as ChartData<'bar'>} options={barOptions} />;
+      
       case 'line':
-        return <Line data={data} options={chartOptions} />;
+        const lineOptions: ChartOptions<'line'> = {
+          ...baseOptions,
+          scales: {
+            x: {
+              grid: {
+                color: '#F0F0F0'
+              },
+              ticks: {
+                color: '#666666',
+                font: {
+                  family: 'Inter',
+                  size: 11
+                }
+              }
+            },
+            y: {
+              grid: {
+                color: '#F0F0F0'
+              },
+              ticks: {
+                color: '#666666',
+                font: {
+                  family: 'Inter',
+                  size: 11
+                }
+              }
+            }
+          }
+        };
+        return <Line data={data as ChartData<'line'>} options={lineOptions} />;
+      
       case 'pie':
-        return <Pie data={data} options={chartOptions} />;
+        return <Pie data={data as ChartData<'pie'>} options={baseOptions} />;
+      
       case 'doughnut':
-        return <Doughnut data={data} options={chartOptions} />;
+        return <Doughnut data={data as ChartData<'doughnut'>} options={baseOptions} />;
+      
       default:
-        return <Bar data={data} options={chartOptions} />;
+        return <Bar data={data as ChartData<'bar'>} options={baseOptions} />;
     }
   };
 
   return (
     <div className={`card ${className}`} style={{ height }}>
       {/* Header */}
-      <div className="px-6 py-4 border-b border-border bg-neutral-50">
+      <div className="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
         <div>
-          <h3 className="text-section text-foreground">{title}</h3>
+          <h3 className="text-2xl font-semibold text-neutral-800">{title}</h3>
           {subtitle && (
-            <p className="text-body-sm text-foreground-muted mt-1">{subtitle}</p>
+            <p className="text-sm text-neutral-600 mt-1">{subtitle}</p>
           )}
         </div>
       </div>
@@ -154,7 +187,7 @@ export default function Chart({
 }
 
 // Sample data generators for different chart types
-export const generateBarChartData = (labels: string[], values: number[]) => ({
+export const generateBarChartData = (labels: string[], values: number[]): ChartData<'bar'> => ({
   labels,
   datasets: [
     {
@@ -173,7 +206,7 @@ export const generateBarChartData = (labels: string[], values: number[]) => ({
   ]
 });
 
-export const generateLineChartData = (labels: string[], values: number[]) => ({
+export const generateLineChartData = (labels: string[], values: number[]): ChartData<'line'> => ({
   labels,
   datasets: [
     {
@@ -192,7 +225,7 @@ export const generateLineChartData = (labels: string[], values: number[]) => ({
   ]
 });
 
-export const generatePieChartData = (labels: string[], values: number[]) => ({
+export const generatePieChartData = (labels: string[], values: number[]): ChartData<'pie'> => ({
   labels,
   datasets: [
     {

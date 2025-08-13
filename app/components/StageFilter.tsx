@@ -44,20 +44,20 @@ export default function StageFilter({
   return (
     <div className={`space-y-3 ${className}`}>
       <div className="flex items-center justify-between">
-        <label className="text-body-sm font-medium text-foreground">
+        <label className="text-sm font-medium text-neutral-800">
           Filter by Stage
         </label>
         <div className="flex items-center gap-2">
           <button
             onClick={selectAll}
-            className="text-caption text-accent-600 hover:text-accent-700 font-medium"
+            className="text-xs text-accent-600 hover:text-accent-700 font-medium"
           >
             Select All
           </button>
-          <span className="text-foreground-muted">•</span>
+          <span className="text-neutral-600">•</span>
           <button
             onClick={clearAll}
-            className="text-caption text-foreground-muted hover:text-foreground"
+            className="text-xs text-neutral-600 hover:text-neutral-800"
           >
             Clear All
           </button>
@@ -72,10 +72,10 @@ export default function StageFilter({
               key={stage}
               onClick={() => toggleStage(stage)}
               className={`
-                inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-body-sm font-medium transition-all duration-200
+                inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-medium transition-all duration-200
                 ${isSelected 
                   ? `${stageColors[stage]} shadow-soft` 
-                  : 'bg-neutral-50 text-foreground-muted border-neutral-200 hover:bg-neutral-100'
+                  : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100'
                 }
               `}
             >
@@ -89,7 +89,7 @@ export default function StageFilter({
       </div>
 
       {selectedStages.length > 0 && (
-        <div className="text-caption text-foreground-muted">
+        <div className="text-xs text-neutral-600">
           {selectedStages.length} stage{selectedStages.length !== 1 ? 's' : ''} selected
         </div>
       )}

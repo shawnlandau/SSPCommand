@@ -13,8 +13,8 @@ export function HeaderUser() {
   return (
     <div className="flex items-center gap-3 ml-auto">
       <div className="flex items-center gap-2 px-3 py-2 bg-neutral-100 rounded-xl">
-        <User className="w-4 h-4 text-foreground-muted" />
-        <span className="text-body-sm text-foreground font-medium">
+        <User className="w-4 h-4 text-neutral-600" />
+        <span className="text-sm text-neutral-800 font-medium">
           {email ?? "Guest"}
         </span>
       </div>

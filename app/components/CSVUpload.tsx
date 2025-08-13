@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Upload, FileText, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Upload, X, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface CSVData {
   headers: string[];
@@ -139,10 +139,10 @@ export default function CSVUpload({
           </div>
           
           <div>
-            <p className="text-section text-foreground">
+            <p className="text-2xl font-semibold text-neutral-800">
               {isDragOver ? 'Drop your CSV file here' : 'Upload CSV File'}
             </p>
-            <p className="text-body-sm text-foreground-secondary mt-1">
+            <p className="text-sm text-neutral-600 mt-1">
               Drag and drop your CSV file here, or click to browse
             </p>
           </div>
@@ -186,8 +186,8 @@ export default function CSVUpload({
           {/* Data Preview */}
           <div className="card overflow-hidden">
             <div className="px-4 py-3 border-b bg-neutral-50">
-              <h3 className="font-medium text-foreground">Data Preview (First 5 rows)</h3>
-              <p className="text-caption text-foreground-muted">
+              <h3 className="font-medium text-neutral-800">Data Preview (First 5 rows)</h3>
+              <p className="text-xs text-neutral-600">
                 {csvData.rows.length} total rows, {csvData.headers.length} columns
               </p>
             </div>
@@ -197,7 +197,7 @@ export default function CSVUpload({
                 <thead>
                   <tr className="border-b bg-neutral-50">
                     {csvData.headers.map((header, index) => (
-                      <th key={index} className="px-4 py-2 text-left text-body-sm font-medium text-foreground-muted">
+                      <th key={index} className="px-4 py-2 text-left text-sm font-medium text-neutral-600">
                         {header}
                       </th>
                     ))}
@@ -207,8 +207,8 @@ export default function CSVUpload({
                   {csvData.preview.map((row, rowIndex) => (
                     <tr key={rowIndex} className="border-b hover:bg-neutral-50">
                       {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} className="px-4 py-2 text-body-sm text-foreground">
-                          {cell || <span className="text-foreground-muted">—</span>}
+                        <td key={cellIndex} className="px-4 py-2 text-sm text-neutral-800">
+                          {cell || <span className="text-neutral-600">—</span>}
                         </td>
                       ))}
                     </tr>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Filter, Search, Download, Eye, Edit, Trash2, Calendar, DollarSign, MapPin, Building, CheckCircle } from 'lucide-react';
+import { Plus, Search, Eye, Edit, Trash2, Calendar, DollarSign, MapPin, Building, CheckCircle } from 'lucide-react';
 import { Opportunity, Stage } from '@/types';
 import CSVUpload from '@/app/components/CSVUpload';
 import DataTable from '@/app/components/DataTable';
@@ -146,12 +146,12 @@ export default function OpportunitiesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-neutral-50">
       <div className="container mx-auto px-6 py-8 space-y-8">
         {/* Header */}
         <div className="space-y-3">
-          <h1 className="text-hero text-foreground">Opportunities</h1>
-          <p className="text-body text-foreground-secondary">
+          <h1 className="text-3xl font-bold text-neutral-800">Opportunities</h1>
+          <p className="text-base text-neutral-600">
             Manage and track your sales opportunities across all territories with comprehensive insights
           </p>
         </div>
@@ -166,10 +166,10 @@ export default function OpportunitiesPage() {
                 </div>
               </div>
               <div>
-                <h2 className="text-section text-foreground">
+                <h2 className="text-2xl font-semibold text-neutral-800">
                   Import Opportunity Data
                 </h2>
-                <p className="text-body text-foreground-secondary mt-2">
+                <p className="text-base text-neutral-600 mt-2">
                   Upload your CSV file to import opportunities and accounts for comprehensive tracking
                 </p>
               </div>
@@ -190,8 +190,8 @@ export default function OpportunitiesPage() {
             <div className="flex items-center gap-3">
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
-                <p className="text-body-sm font-medium text-green-800">Import Successful!</p>
-                <p className="text-caption text-green-600">Your opportunity data has been imported and is ready for analysis</p>
+                <p className="text-sm font-medium text-green-800">Import Successful!</p>
+                <p className="text-xs text-green-600">Your opportunity data has been imported and is ready for analysis</p>
               </div>
             </div>
           </div>
@@ -200,10 +200,10 @@ export default function OpportunitiesPage() {
         {/* CSV Upload Modal */}
         {showCSVUpload && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-card border border-border rounded-2xl shadow-large w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-border">
+            <div className="bg-white border border-neutral-200 rounded-2xl shadow-large w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-neutral-200">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-section text-foreground">Import Opportunity Data</h2>
+                  <h2 className="text-2xl font-semibold text-neutral-800">Import Opportunity Data</h2>
                   <button
                     onClick={() => setShowCSVUpload(false)}
                     className="p-2 hover:bg-neutral-100 rounded-xl transition-colors"
@@ -227,8 +227,8 @@ export default function OpportunitiesPage() {
                 <DollarSign className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <p className="text-body-sm text-foreground-muted">Total Pipeline</p>
-                <p className="text-hero font-bold text-foreground">${(totalPipeline / 1_000_000).toFixed(2)}M</p>
+                <p className="text-sm text-neutral-600">Total Pipeline</p>
+                <p className="text-3xl font-bold text-neutral-800">${(totalPipeline / 1_000_000).toFixed(2)}M</p>
               </div>
             </div>
           </div>
@@ -239,8 +239,8 @@ export default function OpportunitiesPage() {
                 <Building className="w-5 h-5 text-accent-600" />
               </div>
               <div>
-                <p className="text-body-sm text-foreground-muted">Active Opportunities</p>
-                <p className="text-hero font-bold text-foreground">{filteredOpportunities.length}</p>
+                <p className="text-sm text-neutral-600">Active Opportunities</p>
+                <p className="text-3xl font-bold text-neutral-800">{filteredOpportunities.length}</p>
               </div>
             </div>
           </div>
@@ -251,8 +251,8 @@ export default function OpportunitiesPage() {
                 <Eye className="w-5 h-5 text-orange-600" />
               </div>
               <div>
-                <p className="text-body-sm text-foreground-muted">Avg Heat Score</p>
-                <p className="text-hero font-bold text-foreground">{Math.round(avgHeatScore)}</p>
+                <p className="text-sm text-neutral-600">Avg Heat Score</p>
+                <p className="text-3xl font-bold text-neutral-800">{Math.round(avgHeatScore)}</p>
               </div>
             </div>
           </div>
@@ -269,11 +269,11 @@ export default function OpportunitiesPage() {
 
             {/* Search */}
             <div>
-              <label className="block text-body-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-neutral-800 mb-2">
                 Search Opportunities
               </label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
                 <input
                   type="text"
                   placeholder="Search by name or territory..."
@@ -299,9 +299,9 @@ export default function OpportunitiesPage() {
 
         {/* Opportunities Table */}
         <div className="card overflow-hidden">
-          <div className="px-6 py-4 border-b border-border bg-neutral-50">
-            <h3 className="text-section text-foreground">Opportunities</h3>
-            <p className="text-body-sm text-foreground-muted mt-1">
+          <div className="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
+            <h3 className="text-2xl font-semibold text-neutral-800">Opportunities</h3>
+            <p className="text-sm text-neutral-600 mt-1">
               {filteredOpportunities.length} opportunities found
             </p>
           </div>
@@ -310,13 +310,13 @@ export default function OpportunitiesPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b bg-neutral-50">
-                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Opportunity</th>
-                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Stage</th>
-                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Amount</th>
-                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Close Date</th>
-                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Territory</th>
-                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Heat Score</th>
-                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Actions</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Opportunity</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Stage</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Amount</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Close Date</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Territory</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Heat Score</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -324,34 +324,34 @@ export default function OpportunitiesPage() {
                   <tr key={opportunity.id} className="border-b hover:bg-neutral-50 transition-colors duration-150">
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-medium text-foreground">{opportunity.name}</p>
+                        <p className="font-medium text-neutral-800">{opportunity.name}</p>
                         {opportunity.coSell && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent-100 text-accent-700 text-caption rounded-full mt-1">
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent-100 text-accent-700 text-xs rounded-full mt-1">
                             Co-sell
                           </span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex px-3 py-1 text-body-sm font-medium rounded-xl ${stageColors[opportunity.stage]}`}>
+                      <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-xl ${stageColors[opportunity.stage]}`}>
                         {opportunity.stage}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="font-medium text-foreground">${(opportunity.amount / 1_000_000).toFixed(2)}M</p>
+                      <p className="font-medium text-neutral-800">${(opportunity.amount / 1_000_000).toFixed(2)}M</p>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-foreground-muted" />
-                        <span className="text-body-sm">
+                        <Calendar className="w-4 h-4 text-neutral-600" />
+                        <span className="text-sm">
                           {opportunity.closeDate ? new Date(opportunity.closeDate).toLocaleDateString() : 'Not set'}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-foreground-muted" />
-                        <span className="text-body-sm">{opportunity.state}</span>
+                        <MapPin className="w-4 h-4 text-neutral-600" />
+                        <span className="text-sm">{opportunity.state}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -362,21 +362,21 @@ export default function OpportunitiesPage() {
                             style={{ width: `${opportunity.heatScore || 0}%` }}
                           />
                         </div>
-                        <span className="text-body-sm font-medium">{opportunity.heatScore || 0}</span>
+                        <span className="text-sm font-medium">{opportunity.heatScore || 0}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleEditOpportunity(opportunity.id)}
-                          className="p-2 text-foreground-muted hover:text-foreground hover:bg-neutral-100 rounded-xl transition-colors duration-200"
+                          className="p-2 text-neutral-600 hover:text-neutral-800 hover:bg-neutral-100 rounded-xl transition-colors duration-200"
                           aria-label="Edit opportunity"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteOpportunity(opportunity.id)}
-                          className="p-2 text-foreground-muted hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200"
+                          className="p-2 text-neutral-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200"
                           aria-label="Delete opportunity"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -395,7 +395,7 @@ export default function OpportunitiesPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Building className="w-5 h-5 text-accent-600" />
-              <h2 className="text-section text-foreground">Imported Data</h2>
+              <h2 className="text-2xl font-semibold text-neutral-800">Imported Data</h2>
             </div>
             <DataTable
               data={csvData.rows}
