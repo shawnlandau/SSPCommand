@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { DollarSign, Target, TrendingUp, Users, Upload, Database, Table } from 'lucide-react';
+import { DollarSign, Target, TrendingUp, Users, Upload, Database, Table, CheckCircle } from 'lucide-react';
 import { KPI } from '@/types';
 import territories from '@/config/territories.json';
 import KPICard from '@/app/components/KPICard';
 import TerritoryFilter from '@/app/components/TerritoryFilter';
 import ActionBar from '@/app/components/ActionBar';
-import ChartPlaceholder from '@/app/components/ChartPlaceholder';
+import Chart from '@/app/components/Chart';
 import CSVUpload from '@/app/components/CSVUpload';
 import DataTable from '@/app/components/DataTable';
+import { generateBarChartData, generateLineChartData, generatePieChartData } from '@/app/components/Chart';
 
 interface CSVData {
   headers: string[];
@@ -21,6 +22,7 @@ export default function DashboardPage() {
   const [selectedTerritories, setSelectedTerritories] = useState<string[]>([]);
   const [csvData, setCsvData] = useState<CSVData | null>(null);
   const [showCSVUpload, setShowCSVUpload] = useState(false);
+  const [showUploadSuccess, setShowUploadSuccess] = useState(false);
 
   const kpis: KPI = {
     pipelineUSD: 2750000,
@@ -36,6 +38,8 @@ export default function DashboardPage() {
   const handleCSVUpload = (data: CSVData) => {
     setCsvData(data);
     setShowCSVUpload(false);
+    setShowUploadSuccess(true);
+    setTimeout(() => setShowUploadSuccess(false), 3000);
   };
 
   const handleAddOpportunity = () => {
@@ -63,57 +67,96 @@ export default function DashboardPage() {
     console.log('Export clicked');
   };
 
+  // Sample chart data
+  const pipelineByStateData = generateBarChartData(
+    ['CA', 'TX', 'NY', 'FL', 'IL'],
+    [850, 720, 680, 590, 520]
+  );
+
+  const heatScoreData = generatePieChartData(
+    ['High (80-100)', 'Medium (60-79)', 'Low (40-59)', 'Very Low (0-39)'],
+    [35, 40, 20, 5]
+  );
+
+  const winRateTrendData = generateLineChartData(
+    ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    [22, 25, 28, 26, 30, 28]
+  );
+
+  const territoryPerformanceData = generateBarChartData(
+    ['West', 'Central', 'East', 'South'],
+    [1200, 980, 1100, 850]
+  );
+
+  const stageDistributionData = generatePieChartData(
+    ['Prospect', 'Qualify', 'Develop', 'Propose', 'Close'],
+    [25, 20, 30, 15, 10]
+  );
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-6 space-y-8">
+      <div className="container mx-auto px-6 py-8 space-y-8">
         {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">
+        <div className="space-y-3">
+          <h1 className="text-hero text-foreground">
             Territory Command Center
           </h1>
-          <p className="text-muted-foreground">
-            Manage your SSP territory pipeline and opportunities
+          <p className="text-body text-foreground-secondary">
+            Manage your SSP territory pipeline and opportunities with data-driven insights
           </p>
         </div>
 
         {/* CSV Upload Section */}
         {!csvData && (
-          <div className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-6">
-            <div className="text-center space-y-4">
+          <div className="bg-gradient-to-r from-accent-50 to-accent-100 border border-accent-200 rounded-2xl p-8">
+            <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <Database className="w-8 h-8 text-primary" />
+                <div className="p-4 bg-accent-100 rounded-2xl">
+                  <Database className="w-10 h-10 text-accent-600" />
                 </div>
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-foreground">
+                <h2 className="text-section text-foreground">
                   Get Started with Your Data
                 </h2>
-                <p className="text-muted-foreground mt-1">
-                  Upload your CSV file to begin analyzing your territory data
+                <p className="text-body text-foreground-secondary mt-2">
+                  Upload your CSV file to begin analyzing your territory data and unlock powerful insights
                 </p>
               </div>
               <button
                 onClick={() => setShowCSVUpload(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
+                className="btn-primary inline-flex items-center gap-3"
               >
-                <Upload className="w-4 h-4" />
+                <Upload className="w-5 h-5" />
                 Upload CSV Data
               </button>
             </div>
           </div>
         )}
 
+        {/* Upload Success Toast */}
+        {showUploadSuccess && (
+          <div className="fixed top-6 right-6 bg-green-50 border border-green-200 rounded-xl p-4 shadow-medium z-50">
+            <div className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <div>
+                <p className="text-body-sm font-medium text-green-800">Upload Successful!</p>
+                <p className="text-caption text-green-600">Your data has been processed and is ready for analysis</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* CSV Upload Modal */}
         {showCSVUpload && (
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-card border border-border rounded-2xl shadow-large w-full max-w-4xl max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-border">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">Upload CSV Data</h2>
+                  <h2 className="text-section text-foreground">Upload CSV Data</h2>
                   <button
                     onClick={() => setShowCSVUpload(false)}
-                    className="p-2 hover:bg-muted rounded-lg transition-colors"
+                    className="p-2 hover:bg-neutral-100 rounded-xl transition-colors"
                   >
                     ×
                   </button>
@@ -135,7 +178,7 @@ export default function DashboardPage() {
           />
           
           {csvData && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-body-sm text-foreground-muted">
               <Database className="w-4 h-4" />
               <span>{csvData.rows.length} rows loaded</span>
             </div>
@@ -182,8 +225,8 @@ export default function DashboardPage() {
         {csvData && (
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Table className="w-5 h-5 text-primary" />
-              <h2 className="text-xl font-semibold">Your Data</h2>
+              <Table className="w-5 h-5 text-accent-600" />
+              <h2 className="text-section text-foreground">Your Data</h2>
             </div>
             <DataTable
               data={csvData.rows}
@@ -196,38 +239,43 @@ export default function DashboardPage() {
 
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ChartPlaceholder
+          <Chart
+            type="bar"
             title="Pipeline by State"
             subtitle="Monthly pipeline distribution across territories"
-            type="bar"
+            data={pipelineByStateData}
             height={400}
           />
-          <ChartPlaceholder
+          <Chart
+            type="pie"
             title="Heat Score Distribution"
             subtitle="Opportunity scoring and prioritization"
-            type="pie"
+            data={heatScoreData}
             height={400}
           />
         </div>
 
         {/* Additional Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <ChartPlaceholder
+          <Chart
+            type="line"
             title="Win Rate Trends"
             subtitle="Monthly win rate progression"
-            type="line"
+            data={winRateTrendData}
             height={300}
           />
-          <ChartPlaceholder
+          <Chart
+            type="bar"
             title="Territory Performance"
             subtitle="Revenue by territory comparison"
-            type="bar"
+            data={territoryPerformanceData}
             height={300}
           />
-          <ChartPlaceholder
+          <Chart
+            type="pie"
             title="Stage Distribution"
             subtitle="Opportunities by sales stage"
-            type="pie"
+            data={stageDistributionData}
             height={300}
           />
         </div>

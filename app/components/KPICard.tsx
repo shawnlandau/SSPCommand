@@ -28,13 +28,26 @@ export default function KPICard({
   const getVariantStyles = () => {
     switch (variant) {
       case 'success':
-        return 'border-green-200 bg-green-50 text-green-800';
+        return 'border-accent-200 bg-accent-50';
       case 'warning':
-        return 'border-yellow-200 bg-yellow-50 text-yellow-800';
+        return 'border-amber-200 bg-amber-50';
       case 'danger':
-        return 'border-red-200 bg-red-50 text-red-800';
+        return 'border-red-200 bg-red-50';
       default:
-        return 'border-border bg-card text-card-foreground';
+        return 'border-border bg-card';
+    }
+  };
+
+  const getIconColor = () => {
+    switch (variant) {
+      case 'success':
+        return 'text-accent-600';
+      case 'warning':
+        return 'text-amber-600';
+      case 'danger':
+        return 'text-red-600';
+      default:
+        return 'text-accent-500';
     }
   };
 
@@ -42,67 +55,55 @@ export default function KPICard({
     if (!trend) return null;
     
     if (trend.value > 0) {
-      return <TrendingUp className="w-4 h-4 text-green-600" />;
+      return <TrendingUp className="w-4 h-4 text-accent-600" />;
     } else if (trend.value < 0) {
-      return <TrendingDown className="w-4 h-4 text-red-600" />;
+      return <TrendingDown className="w-4 h-4 text-red-500" />;
     } else {
-      return <Minus className="w-4 h-4 text-muted-foreground" />;
+      return <Minus className="w-4 h-4 text-foreground-muted" />;
     }
   };
 
   const getTrendColor = () => {
     if (!trend) return '';
     
-    if (trend.value > 0) return 'text-green-600';
-    if (trend.value < 0) return 'text-red-600';
-    return 'text-muted-foreground';
+    if (trend.value > 0) return 'text-accent-600';
+    if (trend.value < 0) return 'text-red-500';
+    return 'text-foreground-muted';
   };
 
   return (
-    <div className={`group relative overflow-hidden rounded-xl border bg-gradient-to-br from-card to-card/50 p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] ${getVariantStyles()} ${className}`}>
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-muted/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h3 className="text-sm font-medium text-muted-foreground mb-1">
-              {title}
-            </h3>
-            {subtitle && (
-              <p className="text-xs text-muted-foreground/70">{subtitle}</p>
-            )}
-          </div>
-          {icon && (
-            <div className="p-2 rounded-lg bg-muted/50 text-muted-foreground">
-              {icon}
-            </div>
+    <div className={`card p-6 transition-all duration-300 hover:shadow-medium ${getVariantStyles()} ${className}`}>
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex-1">
+          <h3 className="text-body-sm font-medium text-foreground-muted mb-1">
+            {title}
+          </h3>
+          {subtitle && (
+            <p className="text-caption text-foreground-muted">{subtitle}</p>
           )}
         </div>
-
-        {/* Value */}
-        <div className="mb-3">
-          <div className="text-3xl font-bold tracking-tight">
-            {value}
-          </div>
-        </div>
-
-        {/* Trend */}
-        {trend && (
-          <div className={`flex items-center gap-2 text-sm ${getTrendColor()}`}>
-            {getTrendIcon()}
-            <span className="font-medium">
-              {trend.value > 0 ? '+' : ''}{trend.value}%
-            </span>
-            <span className="text-muted-foreground">vs {trend.period}</span>
+        {icon && (
+          <div className={`p-3 rounded-xl bg-neutral-100 ${getIconColor()}`}>
+            {icon}
           </div>
         )}
       </div>
 
-      {/* Hover Effect Border */}
-      <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-primary/20 transition-colors duration-300" />
+      <div className="mb-4">
+        <div className="text-hero font-bold text-foreground">
+          {value}
+        </div>
+      </div>
+
+      {trend && (
+        <div className={`flex items-center gap-2 text-body-sm ${getTrendColor()}`}>
+          {getTrendIcon()}
+          <span className="font-medium">
+            {trend.value > 0 ? '+' : ''}{trend.value}%
+          </span>
+          <span className="text-foreground-muted">vs {trend.period}</span>
+        </div>
+      )}
     </div>
   );
 }

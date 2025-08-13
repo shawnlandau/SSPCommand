@@ -110,10 +110,10 @@ export default function CSVUpload({
     <div className="w-full space-y-4">
       {/* Upload Area */}
       <div
-        className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200 ${
+        className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-200 ${
           isDragOver 
-            ? 'border-primary bg-primary/5' 
-            : 'border-muted-foreground/20 hover:border-primary/40 hover:bg-muted/50'
+            ? 'border-accent-500 bg-accent-50' 
+            : 'border-foreground-muted/20 hover:border-accent-400 hover:bg-neutral-50'
         }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -129,27 +129,27 @@ export default function CSVUpload({
         
         <div className="space-y-3">
           <div className="flex justify-center">
-            <div className={`p-3 rounded-full ${
-              isDragOver ? 'bg-primary/10' : 'bg-muted'
+            <div className={`p-3 rounded-2xl ${
+              isDragOver ? 'bg-accent-100' : 'bg-neutral-100'
             }`}>
               <Upload className={`w-6 h-6 ${
-                isDragOver ? 'text-primary' : 'text-muted-foreground'
+                isDragOver ? 'text-accent-600' : 'text-foreground-muted'
               }`} />
             </div>
           </div>
           
           <div>
-            <p className="text-lg font-medium">
+            <p className="text-section text-foreground">
               {isDragOver ? 'Drop your CSV file here' : 'Upload CSV File'}
             </p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-body-sm text-foreground-secondary mt-1">
               Drag and drop your CSV file here, or click to browse
             </p>
           </div>
           
           {isProcessing && (
-            <div className="flex items-center justify-center gap-2 text-primary">
-              <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
+            <div className="flex items-center justify-center gap-2 text-accent-600">
+              <div className="animate-spin rounded-full h-4 w-4 border-2 border-accent-500 border-t-transparent" />
               Processing...
             </div>
           )}
@@ -158,36 +158,36 @@ export default function CSVUpload({
 
       {/* Error Display */}
       {error && (
-        <div className="flex items-center gap-3 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-          <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
-          <p className="text-destructive text-sm">{error}</p>
+        <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
+          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+          <p className="text-red-600 text-body-sm">{error}</p>
         </div>
       )}
 
       {/* Success Display */}
       {csvData && fileName && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-xl">
             <div className="flex items-center gap-3">
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
-                <p className="font-medium text-green-800">File uploaded successfully!</p>
-                <p className="text-sm text-green-600">{fileName}</p>
+                <p className="font-medium text-green-800 text-body-sm">File uploaded successfully!</p>
+                <p className="text-caption text-green-600">{fileName}</p>
               </div>
             </div>
             <button
               onClick={clearData}
-              className="p-2 hover:bg-green-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-green-100 rounded-xl transition-colors"
             >
               <X className="w-4 h-4 text-green-600" />
             </button>
           </div>
 
           {/* Data Preview */}
-          <div className="bg-card border rounded-lg overflow-hidden">
-            <div className="px-4 py-3 border-b bg-muted/50">
-              <h3 className="font-medium">Data Preview (First 5 rows)</h3>
-              <p className="text-sm text-muted-foreground">
+          <div className="card overflow-hidden">
+            <div className="px-4 py-3 border-b bg-neutral-50">
+              <h3 className="font-medium text-foreground">Data Preview (First 5 rows)</h3>
+              <p className="text-caption text-foreground-muted">
                 {csvData.rows.length} total rows, {csvData.headers.length} columns
               </p>
             </div>
@@ -195,9 +195,9 @@ export default function CSVUpload({
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b bg-muted/30">
+                  <tr className="border-b bg-neutral-50">
                     {csvData.headers.map((header, index) => (
-                      <th key={index} className="px-4 py-2 text-left text-sm font-medium text-muted-foreground">
+                      <th key={index} className="px-4 py-2 text-left text-body-sm font-medium text-foreground-muted">
                         {header}
                       </th>
                     ))}
@@ -205,10 +205,10 @@ export default function CSVUpload({
                 </thead>
                 <tbody>
                   {csvData.preview.map((row, rowIndex) => (
-                    <tr key={rowIndex} className="border-b hover:bg-muted/20">
+                    <tr key={rowIndex} className="border-b hover:bg-neutral-50">
                       {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} className="px-4 py-2 text-sm">
-                          {cell || <span className="text-muted-foreground">—</span>}
+                        <td key={cellIndex} className="px-4 py-2 text-body-sm text-foreground">
+                          {cell || <span className="text-foreground-muted">—</span>}
                         </td>
                       ))}
                     </tr>

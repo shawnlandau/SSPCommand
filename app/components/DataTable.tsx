@@ -96,23 +96,23 @@ export default function DataTable({
   };
 
   return (
-    <div className={`bg-card border border-border rounded-xl overflow-hidden ${className}`}>
+    <div className={`card overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="px-6 py-4 border-b border-border bg-muted/30">
+      <div className="px-6 py-4 border-b border-border bg-neutral-50">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-card-foreground">{title}</h3>
+            <h3 className="text-section text-foreground">{title}</h3>
             {subtitle && (
-              <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
+              <p className="text-body-sm text-foreground-muted mt-1">{subtitle}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
+            <span className="text-body-sm text-foreground-muted">
               {filteredAndSortedData.length} of {data.length} rows
             </span>
             <button
               onClick={handleExport}
-              className="flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 text-sm"
+              className="btn-primary inline-flex items-center gap-2 text-body-sm"
             >
               <Download className="w-4 h-4" />
               Export
@@ -126,13 +126,13 @@ export default function DataTable({
         <div className="flex items-center gap-4">
           <div className="flex-1 max-w-md">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
               <input
                 type="text"
                 placeholder="Search in all columns..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-muted/50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                className="input-field pl-10"
               />
             </div>
           </div>
@@ -140,7 +140,7 @@ export default function DataTable({
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="px-3 py-2 text-body-sm text-foreground-muted hover:text-foreground transition-colors"
             >
               Clear
             </button>
@@ -152,11 +152,11 @@ export default function DataTable({
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b bg-muted/30">
+            <tr className="border-b bg-neutral-50">
               {headers.map((header, index) => (
                 <th
                   key={index}
-                  className="px-4 py-3 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:bg-muted/50 transition-colors duration-150"
+                  className="px-4 py-3 text-left text-body-sm font-medium text-foreground-muted cursor-pointer hover:bg-neutral-100 transition-colors duration-150"
                   onClick={() => handleSort(index)}
                 >
                   <div className="flex items-center gap-2">
@@ -171,11 +171,11 @@ export default function DataTable({
             {currentData.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
-                className="border-b hover:bg-muted/20 transition-colors duration-150"
+                className="border-b hover:bg-neutral-50 transition-colors duration-150"
               >
                 {row.map((cell, cellIndex) => (
-                  <td key={cellIndex} className="px-4 py-3 text-sm">
-                    {cell || <span className="text-muted-foreground">—</span>}
+                  <td key={cellIndex} className="px-4 py-3 text-body-sm text-foreground">
+                    {cell || <span className="text-foreground-muted">—</span>}
                   </td>
                 ))}
               </tr>
@@ -186,9 +186,9 @@ export default function DataTable({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="px-6 py-4 border-t border-border bg-muted/20">
+        <div className="px-6 py-4 border-t border-border bg-neutral-50">
           <div className="flex items-center justify-between">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-body-sm text-foreground-muted">
               Showing {startIndex + 1} to {Math.min(endIndex, filteredAndSortedData.length)} of {filteredAndSortedData.length} results
             </div>
             
@@ -196,7 +196,7 @@ export default function DataTable({
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-2 text-sm border border-border rounded-lg hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                className="px-3 py-2 text-body-sm border border-border rounded-xl hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 Previous
               </button>
@@ -209,10 +209,10 @@ export default function DataTable({
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`px-3 py-2 text-sm rounded-lg transition-colors duration-200 ${
+                        className={`px-3 py-2 text-body-sm rounded-xl transition-colors duration-200 ${
                           page === currentPage
-                            ? 'bg-primary text-primary-foreground'
-                            : 'border border-border hover:bg-muted'
+                            ? 'bg-accent-500 text-white'
+                            : 'border border-border hover:bg-neutral-100'
                         }`}
                       >
                         {page}
@@ -226,7 +226,7 @@ export default function DataTable({
               <button
                 onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-2 text-sm border border-border rounded-lg hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                className="px-3 py-2 text-body-sm border border-border rounded-xl hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 Next
               </button>

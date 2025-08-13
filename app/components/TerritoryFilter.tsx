@@ -42,10 +42,10 @@ export default function TerritoryFilter({
       {/* Filter Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 px-4 py-2.5 bg-card border border-border rounded-lg hover:bg-muted/50 transition-colors duration-200"
+        className="flex items-center gap-3 px-4 py-2.5 bg-card border border-border rounded-xl hover:bg-neutral-50 transition-colors duration-200"
       >
-        <MapPin className="w-4 h-4 text-muted-foreground" />
-        <span className="text-sm font-medium">
+        <MapPin className="w-4 h-4 text-foreground-muted" />
+        <span className="text-body-sm font-medium text-foreground">
           {selectedCount === 0 
             ? 'All Territories' 
             : selectedCount === totalCount 
@@ -53,28 +53,28 @@ export default function TerritoryFilter({
               : `${selectedCount} of ${totalCount} Territories`
           }
         </span>
-        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${
+        <ChevronDown className={`w-4 h-4 text-foreground-muted transition-transform duration-200 ${
           isOpen ? 'rotate-180' : ''
         }`} />
       </button>
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg shadow-lg z-50 max-h-80 overflow-hidden">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-2xl shadow-large z-50 max-h-80 overflow-hidden">
           {/* Header */}
-          <div className="px-4 py-3 border-b bg-muted/30">
+          <div className="px-4 py-3 border-b bg-neutral-50">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">Filter Territories</h3>
+              <h3 className="text-body-sm font-medium text-foreground">Filter Territories</h3>
               <div className="flex gap-2">
                 <button
                   onClick={selectAll}
-                  className="text-xs text-primary hover:text-primary/80 font-medium"
+                  className="text-caption text-accent-600 hover:text-accent-700 font-medium"
                 >
                   Select All
                 </button>
                 <button
                   onClick={clearAll}
-                  className="text-xs text-muted-foreground hover:text-foreground"
+                  className="text-caption text-foreground-muted hover:text-foreground"
                 >
                   Clear
                 </button>
@@ -87,26 +87,26 @@ export default function TerritoryFilter({
             {territories.map((territory) => (
               <label
                 key={territory}
-                className="flex items-center gap-3 px-4 py-2.5 hover:bg-muted/30 cursor-pointer transition-colors duration-150"
+                className="flex items-center gap-3 px-4 py-2.5 hover:bg-neutral-50 cursor-pointer transition-colors duration-150"
               >
                 <input
                   type="checkbox"
                   checked={selectedTerritories.includes(territory)}
                   onChange={() => toggleTerritory(territory)}
-                  className="w-4 h-4 text-primary border-border rounded focus:ring-primary focus:ring-2 focus:ring-offset-0"
+                  className="w-4 h-4 text-accent-500 border-border rounded focus:ring-accent-500 focus:ring-2 focus:ring-offset-0"
                 />
-                <span className="text-sm">{territory}</span>
+                <span className="text-body-sm text-foreground">{territory}</span>
               </label>
             ))}
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2 border-t bg-muted/20">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="px-4 py-2 border-t bg-neutral-50">
+            <div className="flex items-center justify-between text-caption text-foreground-muted">
               <span>{selectedCount} selected</span>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-primary hover:text-primary/80 font-medium"
+                className="text-accent-600 hover:text-accent-700 font-medium"
               >
                 Done
               </button>
@@ -121,13 +121,13 @@ export default function TerritoryFilter({
           {selectedTerritories.map((territory) => (
             <div
               key={territory}
-              className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary text-sm rounded-full border border-primary/20"
+              className="flex items-center gap-2 px-3 py-1.5 bg-accent-50 text-accent-700 text-body-sm rounded-xl border border-accent-200"
             >
               <MapPin className="w-3 h-3" />
               {territory}
               <button
                 onClick={() => toggleTerritory(territory)}
-                className="ml-1 hover:bg-primary/20 rounded-full p-0.5 transition-colors"
+                className="ml-1 hover:bg-accent-100 rounded-lg p-0.5 transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>

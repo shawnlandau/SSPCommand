@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Filter, Search, Download, Eye, Edit, Trash2, Calendar, DollarSign, MapPin, Building } from 'lucide-react';
+import { Plus, Filter, Search, Download, Eye, Edit, Trash2, Calendar, DollarSign, MapPin, Building, CheckCircle } from 'lucide-react';
 import { Opportunity, Stage } from '@/types';
 import CSVUpload from '@/app/components/CSVUpload';
 import DataTable from '@/app/components/DataTable';
+import OpportunityModal from '@/app/components/OpportunityModal';
+import ConfirmDialog from '@/app/components/ConfirmDialog';
+import StageFilter from '@/app/components/StageFilter';
 
 interface CSVData {
   headers: string[];
@@ -56,29 +59,36 @@ const mockOpportunities: Opportunity[] = [
 ];
 
 const stageColors: Record<Stage, string> = {
-  Prospect: 'bg-gray-100 text-gray-800',
-  Qualify: 'bg-blue-100 text-blue-800',
-  Develop: 'bg-yellow-100 text-yellow-800',
-  Propose: 'bg-orange-100 text-orange-800',
-  CloseWon: 'bg-green-100 text-green-800',
-  CloseLost: 'bg-red-100 text-red-800'
+  Prospect: 'bg-neutral-100 text-neutral-700',
+  Qualify: 'bg-accent-50 text-accent-700',
+  Develop: 'bg-amber-50 text-amber-700',
+  Propose: 'bg-orange-50 text-orange-700',
+  CloseWon: 'bg-green-50 text-green-700',
+  CloseLost: 'bg-red-50 text-red-700'
 };
 
 export default function OpportunitiesPage() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>(mockOpportunities);
   const [showCSVUpload, setShowCSVUpload] = useState(false);
-  const [selectedStage, setSelectedStage] = useState<Stage | 'all'>('all');
+  const [selectedStages, setSelectedStages] = useState<Stage[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [csvData, setCsvData] = useState<CSVData | null>(null);
+  const [showOpportunityModal, setShowOpportunityModal] = useState(false);
+  const [editingOpportunity, setEditingOpportunity] = useState<Opportunity | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deletingOpportunityId, setDeletingOpportunityId] = useState<string | null>(null);
+  const [showUploadSuccess, setShowUploadSuccess] = useState(false);
 
   const handleCSVUpload = (data: CSVData) => {
     setCsvData(data);
     setShowCSVUpload(false);
+    setShowUploadSuccess(true);
+    setTimeout(() => setShowUploadSuccess(false), 3000);
     // TODO: Process CSV data and convert to opportunities
   };
 
   const filteredOpportunities = opportunities.filter(opp => {
-    const matchesStage = selectedStage === 'all' || opp.stage === selectedStage;
+    const matchesStage = selectedStages.length === 0 || selectedStages.includes(opp.stage);
     const matchesSearch = searchQuery === '' || 
       opp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       opp.state.toLowerCase().includes(searchQuery.toLowerCase());
@@ -91,69 +101,112 @@ export default function OpportunitiesPage() {
     : 0;
 
   const handleAddOpportunity = () => {
-    // TODO: Implement add opportunity modal
-    console.log('Add opportunity clicked');
+    setEditingOpportunity(null);
+    setShowOpportunityModal(true);
   };
 
   const handleEditOpportunity = (id: string) => {
-    // TODO: Implement edit opportunity modal
-    console.log('Edit opportunity:', id);
+    const opportunity = opportunities.find(opp => opp.id === id);
+    setEditingOpportunity(opportunity || null);
+    setShowOpportunityModal(true);
   };
 
   const handleDeleteOpportunity = (id: string) => {
-    // TODO: Implement delete confirmation
-    setOpportunities(opps => opps.filter(opp => opp.id !== id));
+    setDeletingOpportunityId(id);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleSaveOpportunity = (opportunityData: Partial<Opportunity>) => {
+    if (editingOpportunity) {
+      // Update existing opportunity
+      setOpportunities(opps => opps.map(opp => 
+        opp.id === editingOpportunity.id 
+          ? { ...opp, ...opportunityData, updatedAt: new Date().toISOString() }
+          : opp
+      ));
+    } else {
+      // Create new opportunity
+      const newOpportunity: Opportunity = {
+        id: Date.now().toString(),
+        accountId: 'acc' + Date.now(),
+        ...opportunityData,
+        coSell: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      } as Opportunity;
+      setOpportunities(opps => [...opps, newOpportunity]);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (deletingOpportunityId) {
+      setOpportunities(opps => opps.filter(opp => opp.id !== deletingOpportunityId));
+      setDeletingOpportunityId(null);
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-6 space-y-8">
+      <div className="container mx-auto px-6 py-8 space-y-8">
         {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Opportunities</h1>
-          <p className="text-muted-foreground">
-            Manage and track your sales opportunities across all territories
+        <div className="space-y-3">
+          <h1 className="text-hero text-foreground">Opportunities</h1>
+          <p className="text-body text-foreground-secondary">
+            Manage and track your sales opportunities across all territories with comprehensive insights
           </p>
         </div>
 
         {/* CSV Upload Section */}
         {!csvData && (
-          <div className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-xl p-6">
-            <div className="text-center space-y-4">
+          <div className="bg-gradient-to-r from-accent-50 to-accent-100 border border-accent-200 rounded-2xl p-8">
+            <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <Building className="w-8 h-8 text-primary" />
+                <div className="p-4 bg-accent-100 rounded-2xl">
+                  <Building className="w-10 h-10 text-accent-600" />
                 </div>
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-foreground">
+                <h2 className="text-section text-foreground">
                   Import Opportunity Data
                 </h2>
-                <p className="text-muted-foreground mt-1">
-                  Upload your CSV file to import opportunities and accounts
+                <p className="text-body text-foreground-secondary mt-2">
+                  Upload your CSV file to import opportunities and accounts for comprehensive tracking
                 </p>
               </div>
               <button
                 onClick={() => setShowCSVUpload(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
+                className="btn-primary inline-flex items-center gap-3"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-5 h-5" />
                 Import CSV Data
               </button>
             </div>
           </div>
         )}
 
+        {/* Upload Success Toast */}
+        {showUploadSuccess && (
+          <div className="fixed top-6 right-6 bg-green-50 border border-green-200 rounded-xl p-4 shadow-medium z-50">
+            <div className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <div>
+                <p className="text-body-sm font-medium text-green-800">Import Successful!</p>
+                <p className="text-caption text-green-600">Your opportunity data has been imported and is ready for analysis</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* CSV Upload Modal */}
         {showCSVUpload && (
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-card border border-border rounded-2xl shadow-large w-full max-w-4xl max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-border">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">Import Opportunity Data</h2>
+                  <h2 className="text-section text-foreground">Import Opportunity Data</h2>
                   <button
                     onClick={() => setShowCSVUpload(false)}
-                    className="p-2 hover:bg-muted rounded-lg transition-colors"
+                    className="p-2 hover:bg-neutral-100 rounded-xl transition-colors"
                   >
                     ×
                   </button>
@@ -168,79 +221,65 @@ export default function OpportunitiesPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-card border border-border rounded-xl p-6">
+          <div className="card p-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
+              <div className="p-3 bg-green-100 rounded-xl">
                 <DollarSign className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Pipeline</p>
-                <p className="text-2xl font-bold">${(totalPipeline / 1_000_000).toFixed(2)}M</p>
+                <p className="text-body-sm text-foreground-muted">Total Pipeline</p>
+                <p className="text-hero font-bold text-foreground">${(totalPipeline / 1_000_000).toFixed(2)}M</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-card border border-border rounded-xl p-6">
+          <div className="card p-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Building className="w-5 h-5 text-blue-600" />
+              <div className="p-3 bg-accent-100 rounded-xl">
+                <Building className="w-5 h-5 text-accent-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Active Opportunities</p>
-                <p className="text-2xl font-bold">{filteredOpportunities.length}</p>
+                <p className="text-body-sm text-foreground-muted">Active Opportunities</p>
+                <p className="text-hero font-bold text-foreground">{filteredOpportunities.length}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-card border border-border rounded-xl p-6">
+          <div className="card p-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-100 rounded-lg">
+              <div className="p-3 bg-orange-100 rounded-xl">
                 <Eye className="w-5 h-5 text-orange-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Avg Heat Score</p>
-                <p className="text-2xl font-bold">{Math.round(avgHeatScore)}</p>
+                <p className="text-body-sm text-foreground-muted">Avg Heat Score</p>
+                <p className="text-hero font-bold text-foreground">{Math.round(avgHeatScore)}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-card border border-border rounded-xl p-6">
-          <div className="flex flex-col md:flex-row gap-4">
+        <div className="card p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Stage Filter */}
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-muted-foreground mb-2">
-                Stage Filter
-              </label>
-              <select
-                value={selectedStage}
-                onChange={(e) => setSelectedStage(e.target.value as Stage | 'all')}
-                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                <option value="all">All Stages</option>
-                <option value="Prospect">Prospect</option>
-                <option value="Qualify">Qualify</option>
-                <option value="Develop">Develop</option>
-                <option value="Propose">Propose</option>
-                <option value="CloseWon">Close Won</option>
-                <option value="CloseLost">Close Lost</option>
-              </select>
-            </div>
+            <StageFilter
+              selectedStages={selectedStages}
+              onStageChange={setSelectedStages}
+            />
 
             {/* Search */}
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-muted-foreground mb-2">
-                Search
+            <div>
+              <label className="block text-body-sm font-medium text-foreground mb-2">
+                Search Opportunities
               </label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground-muted" />
                 <input
                   type="text"
-                  placeholder="Search opportunities..."
+                  placeholder="Search by name or territory..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="input-field pl-10"
                 />
               </div>
             </div>
@@ -249,9 +288,9 @@ export default function OpportunitiesPage() {
             <div className="flex items-end">
               <button
                 onClick={handleAddOpportunity}
-                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
+                className="btn-primary w-full"
               >
-                <Plus className="w-4 h-4 inline mr-2" />
+                <Plus className="w-4 h-4 mr-2" />
                 Add Opportunity
               </button>
             </div>
@@ -259,10 +298,10 @@ export default function OpportunitiesPage() {
         </div>
 
         {/* Opportunities Table */}
-        <div className="bg-card border border-border rounded-xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-border bg-muted/30">
-            <h3 className="text-lg font-semibold">Opportunities</h3>
-            <p className="text-sm text-muted-foreground mt-1">
+        <div className="card overflow-hidden">
+          <div className="px-6 py-4 border-b border-border bg-neutral-50">
+            <h3 className="text-section text-foreground">Opportunities</h3>
+            <p className="text-body-sm text-foreground-muted mt-1">
               {filteredOpportunities.length} opportunities found
             </p>
           </div>
@@ -270,75 +309,75 @@ export default function OpportunitiesPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b bg-muted/30">
-                  <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">Opportunity</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">Stage</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">Amount</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">Close Date</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">Territory</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">Heat Score</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">Actions</th>
+                <tr className="border-b bg-neutral-50">
+                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Opportunity</th>
+                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Stage</th>
+                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Amount</th>
+                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Close Date</th>
+                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Territory</th>
+                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Heat Score</th>
+                  <th className="px-6 py-3 text-left text-body-sm font-medium text-foreground-muted">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredOpportunities.map((opportunity) => (
-                  <tr key={opportunity.id} className="border-b hover:bg-muted/20 transition-colors duration-150">
+                  <tr key={opportunity.id} className="border-b hover:bg-neutral-50 transition-colors duration-150">
                     <td className="px-6 py-4">
                       <div>
                         <p className="font-medium text-foreground">{opportunity.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {opportunity.coSell && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                              Co-sell
-                            </span>
-                          )}
-                        </p>
+                        {opportunity.coSell && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent-100 text-accent-700 text-caption rounded-full mt-1">
+                            Co-sell
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${stageColors[opportunity.stage]}`}>
+                      <span className={`inline-flex px-3 py-1 text-body-sm font-medium rounded-xl ${stageColors[opportunity.stage]}`}>
                         {opportunity.stage}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="font-medium">${(opportunity.amount / 1_000_000).toFixed(2)}M</p>
+                      <p className="font-medium text-foreground">${(opportunity.amount / 1_000_000).toFixed(2)}M</p>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm">
+                        <Calendar className="w-4 h-4 text-foreground-muted" />
+                        <span className="text-body-sm">
                           {opportunity.closeDate ? new Date(opportunity.closeDate).toLocaleDateString() : 'Not set'}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm">{opportunity.state}</span>
+                        <MapPin className="w-4 h-4 text-foreground-muted" />
+                        <span className="text-body-sm">{opportunity.state}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-16 bg-muted rounded-full h-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-20 bg-neutral-100 rounded-full h-2">
                           <div 
-                            className="bg-primary h-2 rounded-full transition-all duration-300"
+                            className="bg-accent-500 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${opportunity.heatScore || 0}%` }}
                           />
                         </div>
-                        <span className="text-sm font-medium">{opportunity.heatScore || 0}</span>
+                        <span className="text-body-sm font-medium">{opportunity.heatScore || 0}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleEditOpportunity(opportunity.id)}
-                          className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
+                          className="p-2 text-foreground-muted hover:text-foreground hover:bg-neutral-100 rounded-xl transition-colors duration-200"
+                          aria-label="Edit opportunity"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteOpportunity(opportunity.id)}
-                          className="p-2 text-muted-foreground hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                          className="p-2 text-foreground-muted hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200"
+                          aria-label="Delete opportunity"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -355,8 +394,8 @@ export default function OpportunitiesPage() {
         {csvData && (
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Building className="w-5 h-5 text-primary" />
-              <h2 className="text-xl font-semibold">Imported Data</h2>
+              <Building className="w-5 h-5 text-accent-600" />
+              <h2 className="text-section text-foreground">Imported Data</h2>
             </div>
             <DataTable
               data={csvData.rows}
@@ -367,6 +406,32 @@ export default function OpportunitiesPage() {
           </div>
         )}
       </div>
+
+      {/* Opportunity Modal */}
+      <OpportunityModal
+        isOpen={showOpportunityModal}
+        onClose={() => {
+          setShowOpportunityModal(false);
+          setEditingOpportunity(null);
+        }}
+        opportunity={editingOpportunity}
+        onSave={handleSaveOpportunity}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setDeletingOpportunityId(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Delete Opportunity"
+        message="Are you sure you want to delete this opportunity? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   );
 }
