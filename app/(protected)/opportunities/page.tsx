@@ -6,6 +6,12 @@ import { Opportunity, Stage } from '@/types';
 import CSVUpload from '@/app/components/CSVUpload';
 import DataTable from '@/app/components/DataTable';
 
+interface CSVData {
+  headers: string[];
+  rows: string[][];
+  preview: string[][];
+}
+
 // Mock data for demonstration
 const mockOpportunities: Opportunity[] = [
   {
@@ -63,9 +69,9 @@ export default function OpportunitiesPage() {
   const [showCSVUpload, setShowCSVUpload] = useState(false);
   const [selectedStage, setSelectedStage] = useState<Stage | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [csvData, setCsvData] = useState<any>(null);
+  const [csvData, setCsvData] = useState<CSVData | null>(null);
 
-  const handleCSVUpload = (data: any) => {
+  const handleCSVUpload = (data: CSVData) => {
     setCsvData(data);
     setShowCSVUpload(false);
     // TODO: Process CSV data and convert to opportunities
@@ -301,7 +307,7 @@ export default function OpportunitiesPage() {
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-muted-foreground" />
                         <span className="text-sm">
-                          {new Date(opportunity.closeDate).toLocaleDateString()}
+                          {opportunity.closeDate ? new Date(opportunity.closeDate).toLocaleDateString() : 'Not set'}
                         </span>
                       </div>
                     </td>

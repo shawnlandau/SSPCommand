@@ -72,7 +72,7 @@ export default function CSVTestPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">CSV Upload Test Page</h1>
         <p className="text-muted-foreground">
-          Upload your "SJL Opps" CSV file to test the import functionality
+          Upload your &quot;SJL Opps&quot; CSV file to test the import functionality
         </p>
       </div>
 
