@@ -113,7 +113,7 @@ export default function CSVUpload({
         className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-200 ${
           isDragOver 
             ? 'border-accent-500 bg-accent-50' 
-            : 'border-foreground-muted/20 hover:border-accent-400 hover:bg-neutral-50'
+            : 'border-neutral-300 hover:border-accent-400 hover:bg-neutral-50'
         }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -133,13 +133,13 @@ export default function CSVUpload({
               isDragOver ? 'bg-accent-100' : 'bg-neutral-100'
             }`}>
               <Upload className={`w-6 h-6 ${
-                isDragOver ? 'text-accent-600' : 'text-foreground-muted'
+                isDragOver ? 'text-accent-600' : 'text-neutral-600'
               }`} />
             </div>
           </div>
           
           <div>
-            <p className="text-2xl font-semibold text-neutral-800">
+            <p className="text-2xl font-semibold text-neutral-900">
               {isDragOver ? 'Drop your CSV file here' : 'Upload CSV File'}
             </p>
             <p className="text-sm text-neutral-600 mt-1">
@@ -158,28 +158,28 @@ export default function CSVUpload({
 
       {/* Error Display */}
       {error && (
-        <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
-          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-          <p className="text-red-600 text-body-sm">{error}</p>
+        <div className="flex items-center gap-3 p-4 bg-danger-50 border border-danger-200 rounded-xl">
+          <AlertCircle className="w-5 h-5 text-danger-600 flex-shrink-0" />
+          <p className="text-danger-600 text-sm">{error}</p>
         </div>
       )}
 
       {/* Success Display */}
       {csvData && fileName && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-xl">
+          <div className="flex items-center justify-between p-4 bg-success-50 border border-success-200 rounded-xl">
             <div className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <CheckCircle className="w-5 h-5 text-success-600" />
               <div>
-                <p className="font-medium text-green-800 text-body-sm">File uploaded successfully!</p>
-                <p className="text-caption text-green-600">{fileName}</p>
+                <p className="font-medium text-success-800 text-sm">File uploaded successfully!</p>
+                <p className="text-xs text-success-600">{fileName}</p>
               </div>
             </div>
             <button
               onClick={clearData}
-              className="p-2 hover:bg-green-100 rounded-xl transition-colors"
+              className="p-2 hover:bg-success-100 rounded-xl transition-colors"
             >
-              <X className="w-4 h-4 text-green-600" />
+              <X className="w-4 h-4 text-success-600" />
             </button>
           </div>
 

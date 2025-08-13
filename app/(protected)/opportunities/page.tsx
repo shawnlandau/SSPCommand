@@ -60,11 +60,11 @@ const mockOpportunities: Opportunity[] = [
 
 const stageColors: Record<Stage, string> = {
   Prospect: 'bg-neutral-100 text-neutral-700',
-  Qualify: 'bg-accent-50 text-accent-700',
-  Develop: 'bg-amber-50 text-amber-700',
-  Propose: 'bg-orange-50 text-orange-700',
-  CloseWon: 'bg-green-50 text-green-700',
-  CloseLost: 'bg-red-50 text-red-700'
+  Qualify: 'bg-accent-100 text-accent-700',
+  Develop: 'bg-warning-100 text-warning-700',
+  Propose: 'bg-warning-100 text-warning-700',
+  CloseWon: 'bg-success-100 text-success-700',
+  CloseLost: 'bg-danger-100 text-danger-700'
 };
 
 export default function OpportunitiesPage() {
@@ -149,35 +149,35 @@ export default function OpportunitiesPage() {
     <div className="min-h-screen bg-neutral-50">
       <div className="container mx-auto px-6 py-8 space-y-8">
         {/* Header */}
-        <div className="space-y-3">
-          <h1 className="text-3xl font-bold text-neutral-800">Opportunities</h1>
-          <p className="text-base text-neutral-600">
-            Manage and track your sales opportunities across all territories with comprehensive insights
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold text-neutral-900">Opportunities</h1>
+          <p className="text-lg text-neutral-700 max-w-3xl">
+            Manage and track your sales opportunities across all territories with comprehensive insights and analytics
           </p>
         </div>
 
         {/* CSV Upload Section */}
         {!csvData && (
-          <div className="bg-gradient-to-r from-accent-50 to-accent-100 border border-accent-200 rounded-2xl p-8">
+          <div className="bg-gradient-accent border border-accent-200 rounded-3xl p-8">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
                 <div className="p-4 bg-accent-100 rounded-2xl">
-                  <Building className="w-10 h-10 text-accent-600" />
+                  <Building className="w-12 h-12 text-accent-600" />
                 </div>
               </div>
-              <div>
-                <h2 className="text-2xl font-semibold text-neutral-800">
+              <div className="space-y-3">
+                <h2 className="text-3xl font-semibold text-neutral-900">
                   Import Opportunity Data
                 </h2>
-                <p className="text-base text-neutral-600 mt-2">
-                  Upload your CSV file to import opportunities and accounts for comprehensive tracking
+                <p className="text-lg text-neutral-700 max-w-2xl mx-auto">
+                  Upload your CSV file to import opportunities and accounts for comprehensive tracking and analysis
                 </p>
               </div>
               <button
                 onClick={() => setShowCSVUpload(true)}
-                className="btn-primary inline-flex items-center gap-3"
+                className="btn-primary inline-flex items-center gap-3 text-lg px-8 py-4"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-6 h-6" />
                 Import CSV Data
               </button>
             </div>
@@ -186,12 +186,12 @@ export default function OpportunitiesPage() {
 
         {/* Upload Success Toast */}
         {showUploadSuccess && (
-          <div className="fixed top-6 right-6 bg-green-50 border border-green-200 rounded-xl p-4 shadow-medium z-50">
+          <div className="toast toast-success">
             <div className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <CheckCircle className="w-5 h-5 text-success-600" />
               <div>
-                <p className="text-sm font-medium text-green-800">Import Successful!</p>
-                <p className="text-xs text-green-600">Your opportunity data has been imported and is ready for analysis</p>
+                <p className="text-sm font-medium text-success-800">Import Successful!</p>
+                <p className="text-xs text-success-600">Your opportunity data has been imported and is ready for analysis</p>
               </div>
             </div>
           </div>
@@ -199,11 +199,11 @@ export default function OpportunitiesPage() {
 
         {/* CSV Upload Modal */}
         {showCSVUpload && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white border border-neutral-200 rounded-2xl shadow-large w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="modal-overlay">
+            <div className="modal-content">
               <div className="p-6 border-b border-neutral-200">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-semibold text-neutral-800">Import Opportunity Data</h2>
+                  <h2 className="text-2xl font-semibold text-neutral-900">Import Opportunity Data</h2>
                   <button
                     onClick={() => setShowCSVUpload(false)}
                     className="p-2 hover:bg-neutral-100 rounded-xl transition-colors"
@@ -223,12 +223,12 @@ export default function OpportunitiesPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="card p-6">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-green-100 rounded-xl">
-                <DollarSign className="w-5 h-5 text-green-600" />
+              <div className="p-3 bg-success-100 rounded-xl">
+                <DollarSign className="w-5 h-5 text-success-600" />
               </div>
               <div>
                 <p className="text-sm text-neutral-600">Total Pipeline</p>
-                <p className="text-3xl font-bold text-neutral-800">${(totalPipeline / 1_000_000).toFixed(2)}M</p>
+                <p className="text-3xl font-bold text-neutral-900">${(totalPipeline / 1_000_000).toFixed(2)}M</p>
               </div>
             </div>
           </div>
@@ -240,19 +240,19 @@ export default function OpportunitiesPage() {
               </div>
               <div>
                 <p className="text-sm text-neutral-600">Active Opportunities</p>
-                <p className="text-3xl font-bold text-neutral-800">{filteredOpportunities.length}</p>
+                <p className="text-3xl font-bold text-neutral-900">{filteredOpportunities.length}</p>
               </div>
             </div>
           </div>
           
           <div className="card p-6">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-orange-100 rounded-xl">
-                <Eye className="w-5 h-5 text-orange-600" />
+              <div className="p-3 bg-warning-100 rounded-xl">
+                <Eye className="w-5 h-5 text-warning-600" />
               </div>
               <div>
                 <p className="text-sm text-neutral-600">Avg Heat Score</p>
-                <p className="text-3xl font-bold text-neutral-800">{Math.round(avgHeatScore)}</p>
+                <p className="text-3xl font-bold text-neutral-900">{Math.round(avgHeatScore)}</p>
               </div>
             </div>
           </div>
@@ -298,9 +298,9 @@ export default function OpportunitiesPage() {
         </div>
 
         {/* Opportunities Table */}
-        <div className="card overflow-hidden">
-          <div className="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
-            <h3 className="text-2xl font-semibold text-neutral-800">Opportunities</h3>
+        <div className="table-container">
+          <div className="table-header">
+            <h3 className="text-2xl font-semibold text-neutral-900">Opportunities</h3>
             <p className="text-sm text-neutral-600 mt-1">
               {filteredOpportunities.length} opportunities found
             </p>
@@ -309,38 +309,41 @@ export default function OpportunitiesPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b bg-neutral-50">
-                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Opportunity</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Stage</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Amount</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Close Date</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Territory</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Heat Score</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-neutral-600">Actions</th>
+                <tr className="border-b border-neutral-200 bg-neutral-50">
+                  <th className="table-header-cell">Opportunity</th>
+                  <th className="table-header-cell">Stage</th>
+                  <th className="table-header-cell">Amount</th>
+                  <th className="table-header-cell">Close Date</th>
+                  <th className="table-header-cell">Territory</th>
+                  <th className="table-header-cell">Heat Score</th>
+                  <th className="table-header-cell">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredOpportunities.map((opportunity) => (
-                  <tr key={opportunity.id} className="border-b hover:bg-neutral-50 transition-colors duration-150">
-                    <td className="px-6 py-4">
+                {filteredOpportunities.map((opportunity, index) => (
+                  <tr 
+                    key={opportunity.id} 
+                    className={`table-row ${index % 2 === 0 ? 'bg-white' : 'bg-neutral-50'}`}
+                  >
+                    <td className="table-cell">
                       <div>
-                        <p className="font-medium text-neutral-800">{opportunity.name}</p>
+                        <p className="font-medium text-neutral-900">{opportunity.name}</p>
                         {opportunity.coSell && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent-100 text-accent-700 text-xs rounded-full mt-1">
+                          <span className="badge badge-primary mt-1">
                             Co-sell
                           </span>
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-xl ${stageColors[opportunity.stage]}`}>
+                    <td className="table-cell">
+                      <span className={`badge ${stageColors[opportunity.stage]}`}>
                         {opportunity.stage}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="font-medium text-neutral-800">${(opportunity.amount / 1_000_000).toFixed(2)}M</p>
+                    <td className="table-cell">
+                      <p className="font-medium text-neutral-900">${(opportunity.amount / 1_000_000).toFixed(2)}M</p>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="table-cell">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-neutral-600" />
                         <span className="text-sm">
@@ -348,24 +351,24 @@ export default function OpportunitiesPage() {
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="table-cell">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-neutral-600" />
                         <span className="text-sm">{opportunity.state}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="table-cell">
                       <div className="flex items-center gap-3">
-                        <div className="w-20 bg-neutral-100 rounded-full h-2">
+                        <div className="progress-bar">
                           <div 
-                            className="bg-accent-500 h-2 rounded-full transition-all duration-300"
+                            className="progress-fill"
                             style={{ width: `${opportunity.heatScore || 0}%` }}
                           />
                         </div>
                         <span className="text-sm font-medium">{opportunity.heatScore || 0}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="table-cell">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleEditOpportunity(opportunity.id)}
@@ -376,7 +379,7 @@ export default function OpportunitiesPage() {
                         </button>
                         <button
                           onClick={() => handleDeleteOpportunity(opportunity.id)}
-                          className="p-2 text-neutral-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200"
+                          className="p-2 text-neutral-600 hover:text-danger-600 hover:bg-danger-50 rounded-xl transition-colors duration-200"
                           aria-label="Delete opportunity"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -395,7 +398,7 @@ export default function OpportunitiesPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Building className="w-5 h-5 text-accent-600" />
-              <h2 className="text-2xl font-semibold text-neutral-800">Imported Data</h2>
+              <h2 className="text-2xl font-semibold text-neutral-900">Imported Data</h2>
             </div>
             <DataTable
               data={csvData.rows}

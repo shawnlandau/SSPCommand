@@ -29,15 +29,15 @@ export default function ConfirmDialog({
     switch (variant) {
       case 'danger':
         return {
-          icon: 'text-red-500',
-          button: 'bg-red-500 hover:bg-red-600 focus:ring-red-500',
-          border: 'border-red-200'
+          icon: 'text-danger-500',
+          button: 'bg-danger-500 hover:bg-danger-600 focus:ring-danger-500',
+          border: 'border-danger-200'
         };
       case 'warning':
         return {
-          icon: 'text-amber-500',
-          button: 'bg-amber-500 hover:bg-amber-600 focus:ring-amber-500',
-          border: 'border-amber-200'
+          icon: 'text-warning-500',
+          button: 'bg-warning-500 hover:bg-warning-600 focus:ring-warning-500',
+          border: 'border-warning-200'
         };
       case 'info':
         return {
@@ -51,28 +51,28 @@ export default function ConfirmDialog({
   const styles = getVariantStyles();
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card border border-border rounded-2xl shadow-large w-full max-w-md">
+    <div className="modal-overlay">
+      <div className="bg-white border border-neutral-200 rounded-2xl shadow-xl w-full max-w-md">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-xl bg-neutral-100 ${styles.icon}`}>
               <AlertTriangle className="w-5 h-5" />
             </div>
-            <h2 className="text-section text-foreground">{title}</h2>
+            <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
           </div>
           <button
             onClick={onClose}
             className="p-2 hover:bg-neutral-100 rounded-xl transition-colors duration-200"
             aria-label="Close dialog"
           >
-            <X className="w-5 h-5 text-foreground-muted" />
+            <X className="w-5 h-5 text-neutral-600" />
           </button>
         </div>
 
         {/* Content */}
         <div className="p-6">
-          <p className="text-body text-foreground-secondary mb-6">{message}</p>
+          <p className="text-neutral-700 mb-6">{message}</p>
           
           {/* Action Buttons */}
           <div className="flex items-center justify-end gap-3">

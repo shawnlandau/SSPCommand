@@ -13,11 +13,11 @@ const stages: Stage[] = ['Prospect', 'Qualify', 'Develop', 'Propose', 'CloseWon'
 
 const stageColors: Record<Stage, string> = {
   Prospect: 'bg-neutral-100 text-neutral-700 border-neutral-200',
-  Qualify: 'bg-accent-50 text-accent-700 border-accent-200',
-  Develop: 'bg-amber-50 text-amber-700 border-amber-200',
-  Propose: 'bg-orange-50 text-orange-700 border-orange-200',
-  CloseWon: 'bg-green-50 text-green-700 border-green-200',
-  CloseLost: 'bg-red-50 text-red-700 border-red-200'
+  Qualify: 'bg-accent-100 text-accent-700 border-accent-200',
+  Develop: 'bg-warning-100 text-warning-700 border-warning-200',
+  Propose: 'bg-warning-100 text-warning-700 border-warning-200',
+  CloseWon: 'bg-success-100 text-success-700 border-success-200',
+  CloseLost: 'bg-danger-100 text-danger-700 border-danger-200'
 };
 
 export default function StageFilter({

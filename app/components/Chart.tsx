@@ -60,7 +60,7 @@ export default function Chart({
             family: 'Inter',
             size: 12
           },
-          color: '#4D4D4D'
+          color: '#525252'
         }
       },
       title: {
@@ -69,7 +69,7 @@ export default function Chart({
       tooltip: {
         backgroundColor: '#FFFFFF',
         titleColor: '#262626',
-        bodyColor: '#4D4D4D',
+        bodyColor: '#525252',
         borderColor: '#E0E0E0',
         borderWidth: 1,
         cornerRadius: 8,
@@ -98,7 +98,7 @@ export default function Chart({
                 color: '#F0F0F0'
               },
               ticks: {
-                color: '#666666',
+                color: '#737373',
                 font: {
                   family: 'Inter',
                   size: 11
@@ -110,7 +110,7 @@ export default function Chart({
                 color: '#F0F0F0'
               },
               ticks: {
-                color: '#666666',
+                color: '#737373',
                 font: {
                   family: 'Inter',
                   size: 11
@@ -130,7 +130,7 @@ export default function Chart({
                 color: '#F0F0F0'
               },
               ticks: {
-                color: '#666666',
+                color: '#737373',
                 font: {
                   family: 'Inter',
                   size: 11
@@ -142,7 +142,7 @@ export default function Chart({
                 color: '#F0F0F0'
               },
               ticks: {
-                color: '#666666',
+                color: '#737373',
                 font: {
                   family: 'Inter',
                   size: 11
@@ -165,11 +165,11 @@ export default function Chart({
   };
 
   return (
-    <div className={`card ${className}`} style={{ height }}>
+    <div className={`chart-container ${className}`} style={{ height }}>
       {/* Header */}
-      <div className="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
+      <div className="chart-header">
         <div>
-          <h3 className="text-2xl font-semibold text-neutral-800">{title}</h3>
+          <h3 className="text-xl font-semibold text-neutral-900">{title}</h3>
           {subtitle && (
             <p className="text-sm text-neutral-600 mt-1">{subtitle}</p>
           )}
@@ -177,7 +177,7 @@ export default function Chart({
       </div>
 
       {/* Chart Area */}
-      <div className="p-6 h-full">
+      <div className="chart-content">
         <div style={{ height: height - 120 }}>
           {renderChart()}
         </div>
@@ -186,7 +186,7 @@ export default function Chart({
   );
 }
 
-// Sample data generators for different chart types
+// Sample data generators for different chart types with new color palette
 export const generateBarChartData = (labels: string[], values: number[]): ChartData<'bar'> => ({
   labels,
   datasets: [
@@ -194,10 +194,10 @@ export const generateBarChartData = (labels: string[], values: number[]): ChartD
       label: 'Value',
       data: values,
       backgroundColor: values.map((_, index) => 
-        index === 0 ? '#627D98' : '#BCCCDC'
+        index === 0 ? '#6FA99C' : '#AED9E0'
       ),
       borderColor: values.map((_, index) => 
-        index === 0 ? '#486581' : '#9FB3C8'
+        index === 0 ? '#5A8A7F' : '#8BC8D1'
       ),
       borderWidth: 1,
       borderRadius: 6,
@@ -212,12 +212,12 @@ export const generateLineChartData = (labels: string[], values: number[]): Chart
     {
       label: 'Trend',
       data: values,
-      borderColor: '#627D98',
-      backgroundColor: 'rgba(98, 125, 152, 0.1)',
+      borderColor: '#6FA99C',
+      backgroundColor: 'rgba(111, 169, 156, 0.1)',
       borderWidth: 3,
       fill: true,
       tension: 0.4,
-      pointBackgroundColor: '#627D98',
+      pointBackgroundColor: '#6FA99C',
       pointBorderColor: '#FFFFFF',
       pointBorderWidth: 2,
       pointRadius: 4,
@@ -231,11 +231,11 @@ export const generatePieChartData = (labels: string[], values: number[]): ChartD
     {
       data: values,
       backgroundColor: [
-        '#627D98',
-        '#BCCCDC',
-        '#9FB3C8',
-        '#D9E2EC',
-        '#F0F4F8'
+        '#6FA99C',
+        '#AED9E0',
+        '#8BC8D1',
+        '#D1E9F0',
+        '#F0F8F6'
       ],
       borderColor: '#FFFFFF',
       borderWidth: 2,

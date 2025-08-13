@@ -104,19 +104,19 @@ export default function OpportunityModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-large w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="modal-overlay">
+      <div className="modal-content w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-semibold text-gray-800">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+          <h2 className="text-2xl font-semibold text-neutral-900">
             {opportunity ? 'Edit Opportunity' : 'Add New Opportunity'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200"
+            className="p-2 hover:bg-neutral-100 rounded-xl transition-colors duration-200"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5 text-gray-600" />
+            <X className="w-5 h-5 text-neutral-600" />
           </button>
         </div>
 
@@ -124,7 +124,7 @@ export default function OpportunityModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Opportunity Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-800 mb-2">
+            <label className="block text-sm font-medium text-neutral-800 mb-2">
               Opportunity Name *
             </label>
             <div className="relative">
@@ -132,23 +132,23 @@ export default function OpportunityModal({
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className={`input-field ${errors.name ? 'border-red-300 focus:ring-red-500' : ''}`}
+                className={`input-field ${errors.name ? 'border-danger-300 focus:ring-danger-500' : ''}`}
                 placeholder="Enter opportunity name"
               />
             </div>
             {errors.name && (
-              <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+              <p className="mt-1 text-sm text-danger-500">{errors.name}</p>
             )}
           </div>
 
           {/* Stage and Amount Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-800 mb-2">
+              <label className="block text-sm font-medium text-neutral-800 mb-2">
                 Stage *
               </label>
               <div className="relative">
-                <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+                <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
                 <select
                   value={formData.stage}
                   onChange={(e) => handleInputChange('stage', e.target.value)}
@@ -162,23 +162,23 @@ export default function OpportunityModal({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-800 mb-2">
+              <label className="block text-sm font-medium text-neutral-800 mb-2">
                 Amount (M) *
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
                 <input
                   type="number"
                   step="0.01"
                   min="0"
                   value={formData.amount}
                   onChange={(e) => handleInputChange('amount', e.target.value)}
-                  className={`input-field pl-10 ${errors.amount ? 'border-red-300 focus:ring-red-500' : ''}`}
+                  className={`input-field pl-10 ${errors.amount ? 'border-danger-300 focus:ring-danger-500' : ''}`}
                   placeholder="0.00"
                 />
               </div>
               {errors.amount && (
-                <p className="mt-1 text-sm text-red-500">{errors.amount}</p>
+                <p className="mt-1 text-sm text-danger-500">{errors.amount}</p>
               )}
             </div>
           </div>
@@ -186,11 +186,11 @@ export default function OpportunityModal({
           {/* Close Date and Territory Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-800 mb-2">
+              <label className="block text-sm font-medium text-neutral-800 mb-2">
                 Close Date
               </label>
               <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
                 <input
                   type="date"
                   value={formData.closeDate}
@@ -201,15 +201,15 @@ export default function OpportunityModal({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-800 mb-2">
+              <label className="block text-sm font-medium text-neutral-800 mb-2">
                 Territory *
               </label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
                 <select
                   value={formData.state}
                   onChange={(e) => handleInputChange('state', e.target.value)}
-                  className={`input-field pl-10 ${errors.state ? 'border-red-300 focus:ring-red-500' : ''}`}
+                  className={`input-field pl-10 ${errors.state ? 'border-danger-300 focus:ring-danger-500' : ''}`}
                 >
                   <option value="">Select territory</option>
                   {territories.states.map(state => (
@@ -218,38 +218,38 @@ export default function OpportunityModal({
                 </select>
               </div>
               {errors.state && (
-                <p className="mt-1 text-sm text-red-500">{errors.state}</p>
+                <p className="mt-1 text-sm text-danger-500">{errors.state}</p>
               )}
             </div>
           </div>
 
           {/* Heat Score */}
           <div>
-            <label className="block text-sm font-medium text-gray-800 mb-2">
+            <label className="block text-sm font-medium text-neutral-800 mb-2">
               Heat Score (0-100) *
             </label>
             <div className="relative">
-              <Flame className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+              <Flame className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
               <input
                 type="number"
                 min="0"
                 max="100"
                 value={formData.heatScore}
                 onChange={(e) => handleInputChange('heatScore', e.target.value)}
-                className={`input-field pl-10 ${errors.heatScore ? 'border-red-300 focus:ring-red-500' : ''}`}
+                className={`input-field pl-10 ${errors.heatScore ? 'border-danger-300 focus:ring-danger-500' : ''}`}
                 placeholder="0-100"
               />
             </div>
             {errors.heatScore && (
-              <p className="mt-1 text-sm text-red-500">{errors.heatScore}</p>
+              <p className="mt-1 text-sm text-danger-500">{errors.heatScore}</p>
             )}
-            <p className="mt-1 text-xs text-gray-600">
+            <p className="mt-1 text-xs text-neutral-600">
               Higher scores indicate higher priority opportunities
             </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-200">
             <button
               type="button"
               onClick={onClose}

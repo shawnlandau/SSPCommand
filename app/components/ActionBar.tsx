@@ -37,7 +37,7 @@ export default function ActionBar({
 
   return (
     <div className={`sticky bottom-4 z-30 ${className}`}>
-      <div className="bg-white/80 backdrop-blur-xl border border-neutral-200 rounded-2xl shadow-medium p-4">
+      <div className="bg-white/90 backdrop-blur-xl border border-neutral-200 rounded-2xl shadow-large p-4">
         <div className="flex items-center gap-3">
           {/* Primary Actions */}
           <div className="flex items-center gap-2">
